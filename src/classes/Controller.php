@@ -11,7 +11,7 @@ namespace BFWCtr;
  * Permet de gérer la vue et de savoir vers quel page envoyer
  * @package BFW
  */
-class Controler extends \BFW\Kernel implements \BFWCtrInterface\IControler
+class Controller extends \BFW\Kernel implements \BFWCtrInterface\IController
 {
     /**
      * @var $nameCtr : Le nom du controler appelé

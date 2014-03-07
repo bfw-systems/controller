@@ -1,30 +1,30 @@
 <?php
 $page_title = '';
-$Ctr = new \BFWCtr\Controler();
-$Ctr->setDefaultPage($DefaultControler);
+$Ctr = new \BFWCtr\Controller();
+$Ctr->setDefaultPage($DefaultController);
 
 //La page
-if(file_exists('cache/'.$Ctr->getFileArbo().'.phtml') && $tpl_module == 'BFW_Template')
+if(file_exists($rootPath.'cache/'.$Ctr->getFileArbo().'.phtml') && $tpl_module == 'bfw-template')
 {
     //Cache de BFW_Template
-    require_once('cache/'.$Ctr->getFileArbo().'.phtml');
+    require_once($rootPath.'cache/'.$Ctr->getFileArbo().'.phtml');
 }
-elseif(file_exists('controlers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
+elseif(file_exists($rootPath.'controllers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
 {
-    require_once('controlers/'.$Ctr->getFileArbo().'.php');
+    require_once($rootPath.'controllers/'.$Ctr->getFileArbo().'.php');
 }
 elseif($ctr_class)
 {
-    if(method_exists('\controler\\'.$Ctr->getNameCtr(), $Ctr->getMethode()) && $ctr_class)
+    if(method_exists('\controller\\'.$Ctr->getNameCtr(), $Ctr->getMethode()) && $ctr_class)
     {
-        $ctrName = '\controler\\'.$Ctr->getNameCtr();
+        $ctrName = '\controller\\'.$Ctr->getNameCtr();
         $methodeName = $Ctr->getMethode();
         
         call_user_func(array($ctrName, $methodeName));
     }
-    elseif(method_exists('\controler\index', $Ctr->getMethode()) && $ctr_class)
+    elseif(method_exists('\controller\index', $Ctr->getMethode()) && $ctr_class)
     {
-        call_user_func(array('\controler\index', $Ctr->getMethode()));
+        call_user_func(array('\controller\index', $Ctr->getMethode()));
     }
     else
     {
@@ -33,6 +33,7 @@ elseif($ctr_class)
 }
 else
 {
-    ErrorView(404);
+    echo 'ici ?';
+    ErrorView(404, false);
 }
 ?>
