@@ -2,7 +2,7 @@
 
 namespace BFWCtrInterface;
 
-interface IControler
+interface IController
 {
     /**
      * Constructeur
