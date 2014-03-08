@@ -33,7 +33,6 @@ elseif($ctr_class)
 }
 else
 {
-    echo 'ici ?';
     ErrorView(404, false);
 }
 ?>
