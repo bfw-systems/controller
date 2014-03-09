@@ -1,7 +1,7 @@
 <?php
 /**
  * Classes géant les pages
- * @author Vermeulen Maxime
+ * @author Vermeulen Maxime <bulton.fr@gmail.com>
  * @version 1.0
  */
 
@@ -9,41 +9,49 @@ namespace BFWCtr;
 
 /**
  * Permet de gérer la vue et de savoir vers quel page envoyer
- * @package BFW
+ * @package bfw-controller
  */
-class Controller extends \BFW\Kernel implements \BFWCtrInterface\IController
+class Controller implements \BFWCtrInterface\IController
 {
     /**
-     * @var $nameCtr : Le nom du controler appelé
+     * @var $_kernel L'instance du Kernel
+     */
+    private $_kernel;
+    
+    /**
+     * @var $nameCtr Le nom du controler appelé
      */
     private $nameCtr = '';
     
     /**
-     * @var $nameMethode : Le nom de la méthode à appeler
+     * @var $nameMethode Le nom de la méthode à appeler
      */
     private $nameMethode = '';
     
     /**
-     * @var $link_file : L'arborescence interne dans les fichiers
+     * @var $link_file L'arborescence interne dans les fichiers
      */
     private $fileArbo = '';
     
     /**
-     * @var $arg : Les arguments get
+     * @var $arg Les arguments get
      */
     private $arg = array();
     
     /**
-     * @var $defaultPage : La page par défault (celle qui sert de page index au site)
+     * @var $defaultPage La page par défault (celle qui sert de page index au site)
      */
     private $defaultPage;
     
     /**
      * Constructeur
-     * @param string $default_page [opt] : La page par défaut du site (la page index du site)
+     * 
+     * @param string $default_page (default: null) La page par défaut du site (la page index du site)
      */
     public function __construct($default_page=null)
     {
+        $this->_kernel = getKernel();
+        
         $this->arg2get(); //Découpe pour obtenir les gets
         $this->verifLink();
         
@@ -56,6 +64,7 @@ class Controller extends \BFW\Kernel implements \BFWCtrInterface\IController
     
     /**
      * Retourne l'arborescence vers le fichier controler (inclus)
+     * 
      * @return string
      */
     public function getFileArbo()
@@ -224,7 +233,7 @@ class Controller extends \BFW\Kernel implements \BFWCtrInterface\IController
     /**
      * Modifie la page par défault
      * 
-     * @param string $name : Le nom de la page index du site
+     * @param string $name Le nom de la page index du site
      */
     public function setDefaultPage($name)
     {
