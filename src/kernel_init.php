@@ -1,4 +1,11 @@
 <?php
+/**
+ * Actions à effectuer lors de l'initialisation du module par le framework.
+ * @author Vermeulen Maxime <bulton.fr@gmail.com>
+ * @package bfw-controller
+ * @version 1.0
+ */
+ 
 $page_title = '';
 $Ctr = new \BFWCtr\Controller();
 $Ctr->setDefaultPage($DefaultController);
