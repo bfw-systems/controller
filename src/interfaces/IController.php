@@ -14,13 +14,6 @@ namespace BFWCtrInterface;
 interface IController
 {
     /**
-     * Constructeur
-     * 
-     * @param string $default_page (default: null) La page par défaut du site (la page index du site)
-     */
-    public function __construct($default_page=null);
-    
-    /**
      * Retourne l'arborescence vers le fichier controler (inclus)
      * 
      * @return string

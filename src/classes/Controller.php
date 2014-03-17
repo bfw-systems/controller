@@ -16,32 +16,32 @@ class Controller implements \BFWCtrInterface\IController
     /**
      * @var $_kernel L'instance du Kernel
      */
-    private $_kernel;
+    protected $_kernel;
     
     /**
      * @var $nameCtr Le nom du controler appelé
      */
-    private $nameCtr = '';
+    protected $nameCtr = '';
     
     /**
      * @var $nameMethode Le nom de la méthode à appeler
      */
-    private $nameMethode = '';
+    protected $nameMethode = '';
     
     /**
      * @var $link_file L'arborescence interne dans les fichiers
      */
-    private $fileArbo = '';
+    protected $fileArbo = '';
     
     /**
      * @var $arg Les arguments get
      */
-    private $arg = array();
+    protected $arg = array();
     
     /**
      * @var $defaultPage La page par défault (celle qui sert de page index au site)
      */
-    private $defaultPage;
+    protected $defaultPage;
     
     /**
      * Constructeur
@@ -80,7 +80,7 @@ class Controller implements \BFWCtrInterface\IController
     /**
      * Récupère les informatios mises en get
      */
-    private function arg2get()
+    protected function arg2get()
     {
         if($this->fileArbo == '')
         {
@@ -100,7 +100,7 @@ class Controller implements \BFWCtrInterface\IController
     /**
      * On vérifie le lien pour trouver le controler
      */ 
-    private function verifLink()
+    protected function verifLink()
     {
         if($this->fileArbo == '')
         {
@@ -125,7 +125,7 @@ class Controller implements \BFWCtrInterface\IController
     /**
      * Récupère le lien de la page
      */
-    private function decoupeLink()
+    protected function decoupeLink()
     {
         //Link de la forme : /compte/user/xx/yy avec le dossier compte, la page user et 2 valeurs get (xx et yy)
         
