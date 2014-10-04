@@ -31,7 +31,7 @@ CODE COVERAGE SETUP
 if(!file_exists('/home/travis'))
 {
     // Please replace in next line "Project Name" by your project name and "/path/to/destination/directory" by your destination directory path for html files.
-    $coverageField = new atoum\report\fields\runner\coverage\html('BFWCtr', '/home/bubu-blog/www/atoum/bfw-controller/report');
+    $coverageField = new atoum\report\fields\runner\coverage\html('BFW Controller', '/home/bubu-blog/www/atoum/bfw-controller/report');
     
     // Please replace in next line http://url/of/web/site by the root url of your code coverage web site.
     $coverageField->setRootUrl('http://test.bulton.fr/atoum/bfw-controller/');
