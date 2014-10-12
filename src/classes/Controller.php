@@ -58,7 +58,7 @@ class Controller implements \BFWCtrInterface\IController
         //Si la page par défaut a été indiqué, on la définie.
         if($default_page != null)
         {
-            $this->set_defaultPage($default_page);
+            $this->setDefaultPage($default_page);
         }
     }
     
@@ -117,7 +117,7 @@ class Controller implements \BFWCtrInterface\IController
             
             if(file_exists($path.'controlers/'.$page_uri.'.php'))
             {
-                $this->fileArbo= $page_uri;
+                $this->fileArbo = $page_uri;
             }
         }
     }
@@ -224,7 +224,7 @@ class Controller implements \BFWCtrInterface\IController
                 else
                 {
                     global $ctr_defaultMethode;
-                    $this->nameMethide = $ctr_defaultMethode;
+                    $this->nameMethode = $ctr_defaultMethode;
                 }
             }
         }

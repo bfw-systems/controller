@@ -24,6 +24,7 @@ interface IController
      * Modifie la page par défault
      * 
      * @param string $name Le nom de la page index du site
+     * @return void
      */
     public function setDefaultPage($name);
     
