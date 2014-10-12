@@ -58,7 +58,7 @@ class Controller implements \BFWCtrInterface\IController
         //Si la page par défaut a été indiqué, on la définie.
         if($default_page != null)
         {
-            $this->set_defaultPage($default_page);
+            $this->setDefaultPage($default_page);
         }
     }
     
