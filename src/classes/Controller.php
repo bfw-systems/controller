@@ -124,15 +124,17 @@ class Controller implements \BFWCtrInterface\IController
     
     /**
      * Récupère le lien de la page
+     * 
+     * @return void
      */
     protected function decoupeLink()
     {
         //Link de la forme : /compte/user/xx/yy avec le dossier compte, la page user et 2 valeurs get (xx et yy)
         
         global $_GET, $path, $base_url;
-        $link = $_SERVER['REQUEST_URI']; //On récupère l'url courante
+        $link      = $_SERVER['REQUEST_URI']; //On récupère l'url courante
+        $exBaseUrl = explode('/', $base_url); //Découpe le base url
         
-        $exBaseUrl = explode('/', $base_url);
         if(count($exBaseUrl) > 3)
         {
             unset($exBaseUrl[0], $exBaseUrl[1], $exBaseUrl[2]);
@@ -147,86 +149,75 @@ class Controller implements \BFWCtrInterface\IController
         {
             $this->fileArbo = $this->defaultPage;
             $this->nameCtr = $this->defaultPage;
+            
+            return;
+        }
+        
+        $link = substr($link, 1); //enlève le premier / de l'url
+        $exArg = explode('?', $link);
+        $ex = explode('/', $exArg[0]); //Découpage de l'url, on découpe sur chaque /
+        
+        $file_find = false; //Indique si le fichier a été trouvé
+        $dir_find = false; //Indique si le dossier a été trouvé
+        
+        $dirArbo = '';
+        $methode = '';
+        
+        foreach($ex as $val)
+        {
+            //Le fichier à été trouvé
+            if($file_find)
+            {
+                $this->arg[] = $val;
+                continue;
+            }
+            
+            //Tant qu'on a pas trouvé le fichier
+            
+            if(!empty($dirArbo) && empty($methode)) {$methode = $val;}
+            
+            //On rajoute un / à la fin du lien si on a commencé à mettre des choses dessus
+            if($this->fileArbo != '') {$this->fileArbo .= '/';}
+            
+            $this->fileArbo .= $val; //Et on y rajoute la valeur lu
+            
+            //Si le fichier existe dans le dossier modèle. On passe la $file_find à true
+            if(file_exists($path.'controlers/'.$this->fileArbo.'.php'))
+            {
+                $this->nameCtr = $this->fileArbo;
+                $file_find = true;
+            }
+            
+            //Si un dossier existe pourtant le nom, on passe $dir_find à true
+            if(file_exists($path.'controlers/'.$this->fileArbo))
+            {
+                $dir_find = true;
+                $dirArbo = $this->fileArbo;
+            }
+        }
+        
+        if($file_find == true) {return;}
+        
+        //Si rien a été trouvé, on rajoute "/index" à la fin du lien
+        if($dir_find == true)
+        {
+            global $ctr_class;
+            
+            $this->nameCtr     = $this->fileArbo;
+            $this->nameMethode = $methode;
+            
+            if(!(method_exists('\controler\\'.$dirArbo, $methode) && $ctr_class))
+            {
+                $this->fileArbo = $dirArbo.'/index';
+                $this->nameCtr = $dirArbo.'\index';
+            }
         }
         else
         {
-            $link = substr($link, 1); //enlève le premier / de l'url
-            $exArg = explode('?', $link);
-            $ex = explode('/', $exArg[0]); //Découpage de l'url, on découpe sur chaque /
+            global $ctr_defaultMethode;
+            $this->nameMethode = $ctr_defaultMethode;
             
-            $file_find = false; //Indique si le fichier a été trouvé
-            $dir_find = false; //Indique si le dossier a été trouvé
-            
-            $dirArbo = '';
-            $methode = '';
-            
-            foreach($ex as $val)
-            {
-                if(!$file_find) //Tant qu'on a pas trouvé le fichier
-                {
-                    if(!empty($dirArbo) && empty($methode))
-                    {
-                        $methode = $val;
-                    }
-                    
-                    //On rajoute un / à la fin du lien si on a commencé à mettre des choses dessus
-                    if($this->fileArbo != '')
-                    {
-                        $this->fileArbo .= '/';
-                    }
-                    
-                    $this->fileArbo .= $val; //Et on y rajoute la valeur lu
-                    
-                    //Si le fichier existe dans le dossier modèle. On passe la $file_find à true
-                    if(file_exists($path.'controlers/'.$this->fileArbo.'.php'))
-                    {
-                        $this->nameCtr = $this->fileArbo;
-                        $file_find = true;
-                    }
-                    
-                    //Si un dossier existe pourtant le nom, on passe $dir_find à true
-                    if(file_exists($path.'controlers/'.$this->fileArbo))
-                    {
-                        $dir_find = true;
-                        $dirArbo = $this->fileArbo;
-                    }
-                }
-                //Si le fichier a été trouvé, alors on ajoute la valeur lu aux argumets get.
-                else
-                {
-                    $this->arg[] = $val;
-                }
-            }
-            
-            //Si rien a été trouvé, on rajoute "/index" à la fin du lien
-            if($file_find == false && $dir_find == true)
-            {
-                global $ctr_class;
-                if(!(method_exists('\controler\\'.$dirArbo, $methode) && $ctr_class))
-                {
-                    $this->fileArbo = $dirArbo.'/index';
-                    $this->nameCtr = $dirArbo.'\index';
-                }
-                else
-                {
-                    $this->nameCtr = $this->fileArbo;
-                }
-                
-                $this->nameMethode = $methode;
-            }
-            
-            if($file_find == false && $dir_find == false)
-            {
-                if(isset($ex[0]))
-                {
-                    $this->nameMethode = $ex[0];
-                }
-                else
-                {
-                    global $ctr_defaultMethode;
-                    $this->nameMethode = $ctr_defaultMethode;
-                }
-            }
+            if(isset($ex[0])) {$this->nameMethode = $ex[0];}
         }
     }
     

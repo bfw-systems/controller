@@ -5,6 +5,8 @@
  * @package bfw-controller
  * @version 1.0
  */
+
+require_once($rootPath.'configs/bfw-controller/config.php');
  
 $page_title = '';
 $Ctr = new \BFWCtr\Controller();
