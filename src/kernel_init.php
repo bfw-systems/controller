@@ -13,12 +13,7 @@ $Ctr = new \BFWCtr\Controller();
 $Ctr->setDefaultPage($DefaultController);
 
 //La page
-if(file_exists($rootPath.'cache/'.$Ctr->getFileArbo().'.phtml') && $tpl_module == 'bfw-template')
-{
-    //Cache de BFW_Template
-    require_once($rootPath.'cache/'.$Ctr->getFileArbo().'.phtml');
-}
-elseif(file_exists($rootPath.'controllers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
+if(file_exists($rootPath.'controllers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
 {
     require_once($rootPath.'controllers/'.$Ctr->getFileArbo().'.php');
 }
