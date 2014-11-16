@@ -182,14 +182,14 @@ class Controller implements \BFWCtrInterface\IController
             $this->fileArbo .= $val; //Et on y rajoute la valeur lu
             
             //Si le fichier existe dans le dossier modèle. On passe la $file_find à true
-            if(file_exists($path.'controlers/'.$this->fileArbo.'.php'))
+            if(file_exists(path_controllers.'/'.$this->fileArbo.'.php'))
             {
                 $this->nameCtr = $this->fileArbo;
                 $file_find = true;
             }
             
             //Si un dossier existe pourtant le nom, on passe $dir_find à true
-            if(file_exists($path.'controlers/'.$this->fileArbo))
+            if(file_exists(path_controllers.'/'.$this->fileArbo))
             {
                 $dir_find = true;
                 $dirArbo = $this->fileArbo;
@@ -206,7 +206,7 @@ class Controller implements \BFWCtrInterface\IController
             $this->nameCtr     = $this->fileArbo;
             $this->nameMethode = $methode;
             
-            if(!(method_exists('\controler\\'.$dirArbo, $methode) && $ctr_class))
+            if(!(method_exists('\controller\\'.$dirArbo, $methode) && $ctr_class))
             {
                 $this->fileArbo = $dirArbo.'/index';
                 $this->nameCtr = $dirArbo.'\index';
