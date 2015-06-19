@@ -52,14 +52,14 @@ class Controller implements \BFWCtrInterface\IController
     {
         $this->_kernel = getKernel();
         
-        $this->arg2get(); //Découpe pour obtenir les gets
-        $this->verifLink();
-        
         //Si la page par défaut a été indiqué, on la définie.
         if($default_page != null)
         {
             $this->setDefaultPage($default_page);
         }
+        
+        $this->arg2get(); //Découpe pour obtenir les gets
+        $this->verifLink();
     }
     
     /**
@@ -229,6 +229,7 @@ class Controller implements \BFWCtrInterface\IController
     public function setDefaultPage($name)
     {
         $this->defaultPage = $name;
+        $this->decoupeLink();
     }
     
     /**
