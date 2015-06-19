@@ -10,7 +10,7 @@ require_once($rootPath.'configs/bfw-controller/config.php');
  
 $page_title = '';
 $Ctr = new \BFWCtr\Controller();
-$Ctr->setDefaultPage($DefaultController);
+$Ctr->setDefaultPage($ctr_defaultMethode);
 
 //La page
 if(file_exists($rootPath.'controllers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
