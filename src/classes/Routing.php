@@ -56,7 +56,7 @@ class Routing
         //S'il s'agit de la page index ou racine, on envoi vers la page par défault
         if($link == 'index.php' || $link == '')
         {
-            $returnObj->fileArbo = $this->controller->getOptions()->defaultMethode;
+            $returnObj->fileArbo = $this->controller->getOptions()->defaultMethode.'.php';
             $returnObj->nameCtr  = $this->controller->getOptions()->defaultMethode;
 
             return $returnObj;
@@ -108,6 +108,8 @@ class Routing
 
         if($file_find == true)
         {
+            $returnObj->fileArbo .= '.php';
+            
             return $returnObj;
         }
 
@@ -119,7 +121,7 @@ class Routing
 
             if(!(method_exists('\controller\\'.$dirArbo, $methode) && $this->controller->getOptions()->useClass))
             {
-                $returnObj->fileArbo = $dirArbo.'/index';
+                $returnObj->fileArbo = $dirArbo.'/index.php';
                 $returnObj->nameCtr  = $dirArbo.'\index';
             }
 

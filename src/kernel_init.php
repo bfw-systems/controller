@@ -12,11 +12,11 @@ $ctr = new \BFWCtr\Controller($bfwCtrConfig);
 
 //La page
 if(
-    file_exists($rootPath.'controllers/'.$ctr->getFileArbo().'.php')
+    file_exists($rootPath.'controllers/'.$ctr->getFileArbo())
     && !$bfwCtrConfig->useClass
 )
 {
-    require_once($rootPath.'controllers/'.$ctr->getFileArbo().'.php');
+    require_once($rootPath.'controllers/'.$ctr->getFileArbo());
 }
 elseif($bfwCtrConfig->useClass)
 {
