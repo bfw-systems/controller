@@ -7,28 +7,35 @@
  */
 
 require_once($rootPath.'configs/bfw-controller/config.php');
- 
-$page_title = '';
-$Ctr = new \BFWCtr\Controller();
-$Ctr->setDefaultPage($ctr_defaultMethode);
+
+$ctr = new \BFWCtr\Controller($bfwCtrConfig);
 
 //La page
-if(file_exists($rootPath.'controllers/'.$Ctr->getFileArbo().'.php') && !$ctr_class)
+if(
+    file_exists($rootPath.'controllers/'.$ctr->getFileArbo().'.php')
+    && !$bfwCtrConfig->useClass
+)
 {
-    require_once($rootPath.'controllers/'.$Ctr->getFileArbo().'.php');
+    require_once($rootPath.'controllers/'.$ctr->getFileArbo().'.php');
 }
-elseif($ctr_class)
+elseif($bfwCtrConfig->useClass)
 {
-    if(method_exists('\controller\\'.$Ctr->getNameCtr(), $Ctr->getMethode()) && $ctr_class)
+    if(
+        method_exists('\controller\\'.$ctr->getNameCtr(), $ctr->getMethode())
+        && $bfwCtrConfig->useClass
+    )
     {
-        $ctrName = '\controller\\'.$Ctr->getNameCtr();
-        $methodeName = $Ctr->getMethode();
+        $ctrName = '\controller\\'.$ctr->getNameCtr();
+        $methodeName = $ctr->getMethode();
         
         call_user_func(array($ctrName, $methodeName));
     }
-    elseif(method_exists('\controller\index', $Ctr->getMethode()) && $ctr_class)
+    elseif(
+        method_exists('\controller\index', $ctr->getMethode())
+        && $bfwCtrConfig->useClass
+    )
     {
-        call_user_func(array('\controller\index', $Ctr->getMethode()));
+        call_user_func(array('\controller\index', $ctr->getMethode()));
     }
     else
     {
@@ -39,4 +46,3 @@ else
 {
     ErrorView(404, false);
 }
-?>
