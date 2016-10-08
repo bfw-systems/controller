@@ -17,8 +17,8 @@ before_script:
 script:
   - ./vendor/bin/atoum -c .atoum.php -d test/unit/src -utr
   - chmod +x test/run/installer_*
-  - ./test/run/installer_object
-  - ./test/run/installer_procedural
+  - cd $TRAVIS_BUILD_DIR/test/run && ./installer_object
+  - cd $TRAVIS_BUILD_DIR/test/run && ./installer_procedural
 
 after_script:
  ## Scrutinizer
