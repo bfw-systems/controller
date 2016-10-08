@@ -42,4 +42,3 @@ interface IController
      */
     public function getMethode();
 }
-?>
