@@ -10,86 +10,76 @@ More information on documentation:
 [fr] http://docs.atoum.org/fr/chapter3.html#Fichier-de-configuration
 */
 
-use \mageekguy\atoum,
-    \mageekguy\atoum\reports;
+use \mageekguy\atoum;
+//use \mageekguy\atoum\reports;
 
-$report = $script->addDefaultReport();
-
-/*
-LOGO
-*/
-// This will add the atoum logo before each run.
-$report->addField(new atoum\report\fields\runner\atoum\logo());
-
-// This will add a green or red logo after each run depending on its status.
-$report->addField(new atoum\report\fields\runner\result\logo());
-/**/
-
-/*
-CODE COVERAGE SETUP
-*/
+// CODE COVERAGE SETUP
 if(!file_exists('/home/travis'))
 {
-    // Please replace in next line "Project Name" by your project name and "/path/to/destination/directory" by your destination directory path for html files.
-    $coverageField = new atoum\report\fields\runner\coverage\html('BFW Controller', '/home/bubu-blog/www/atoum/bfw-controller/report');
-    
-    // Please replace in next line http://url/of/web/site by the root url of your code coverage web site.
-    $coverageField->setRootUrl('http://test.bulton.fr/atoum/bfw-controller/');
-    
+    /* Atoum Logo (add slash to start of this line for enable/disable)
+    $report = $script->addDefaultReport();
+    $report->addField(new atoum\report\fields\runner\atoum\logo()); //Start
+    $report->addField(new atoum\report\fields\runner\result\logo()); //End status
+    /*/
+    //Nyancat
+    $stdout = new \mageekguy\atoum\writers\std\out;
+    $report = new \mageekguy\atoum\reports\realtime\nyancat;
+    $script->addReport($report->addWriter($stdout));
+    /**/
+
+    $coverageField = new atoum\report\fields\runner\coverage\html('BFW Controller', '/home/bfw/www/reports/bfw-controller-v3');
+    $coverageField->setRootUrl('http://bfw.test.bulton.fr/reports/bfw-controller-v3/');
     $report->addField($coverageField);
+    
+    $treemapField = new atoum\report\fields\runner\coverage\treemap('BFW Controller', '/home/bfw/www/treemap/bfw-controller-v3');
+    $treemapField->setHtmlReportBaseUrl('http://bfw.test.bulton.fr/treemap/bfw-controller-v3/');
+    $report->addField($treemapField);
 }
 /**/
 
 /*
 TEST GENERATOR SETUP
-*/
-$testGenerator = new atoum\test\generator();
-
-// Please replace in next line "/path/to/your/tests/units/classes/directory" by your unit test's directory.
-$testGenerator->setTestClassesDirectory(__DIR__.'/test/classes');
-
-// Please replace in next line "your\project\namespace\tests\units" by your unit test's namespace.
-$testGenerator->setTestClassNamespace('BFWCtr\test\unit');
-
-// Please replace in next line "/path/to/your/classes/directory" by your classes directory.
-$testGenerator->setTestedClassesDirectory(__DIR__.'/src/classes');
-
-// Please replace in next line "your\project\namespace" by your project namespace.
-$testGenerator->setTestedClassNamespace('BFWCtr');
-
-// Please replace in next line "path/to/your/tests/units/runner.php" by path to your unit test's runner.
-//$testGenerator->setRunnerPath('path/to/your/tests/units/runner.php');
-
-$script->getRunner()->setTestGenerator($testGenerator);
+*//*
+$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/install/class');
+$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/src/class');
+$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/src/class/core');
+$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/src/class/memcache');
+//$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/src/functions');
+//$script->getRunner()->addTestsFromDirectory(__DIR__.'/test/unit/src/trait');
 /**/
 
+if(file_exists('/home/travis'))
+{
+    // Publish code coverage report on coveralls.io
+    $sources = './src';
+    $token = '725NDVfV6EgyEujJftIZxaULbHpJgyLjA';
+    $coverallsReport = new atoum\reports\asynchronous\coveralls($sources, $token);
+    
+    // If you are using Travis-CI (or any other CI tool), you should customize the report
+    // https://coveralls.io/docs/api
+    // http://about.travis-ci.org/docs/user/ci-environment/#Environment-variables
+    // https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-JenkinsSetEnvironmentVariables
+    $defaultFinder = $coverallsReport->getBranchFinder();
+    $coverallsReport
+        ->setBranchFinder(function() use ($defaultFinder) {
+            if (($branch = getenv('TRAVIS_BRANCH')) === false)
+            {
+                $branch = $defaultFinder();
+            }
+    
+            return $branch;
+        })
+        ->setServiceName(getenv('TRAVIS') ? 'travis-ci' : null)
+        ->setServiceJobId(getenv('TRAVIS_JOB_ID') ?: null)
+        ->addDefaultWriter()
+    ;
+    
+    $runner->addReport($coverallsReport);
+    
+    //Scrutinizer coverage
+	$cloverWriter = new atoum\writers\file('clover.xml');
+	$cloverReport = new atoum\reports\asynchronous\clover();
+	$cloverReport->addWriter($cloverWriter);
 
-/*
-Publish code coverage report on coveralls.io
-*/
-$sources = './src';
-$token = '725NDVfV6EgyEujJftIZxaULbHpJgyLjA';
-$coverallsReport = new reports\asynchronous\coveralls($sources, $token);
-
-/*
-If you are using Travis-CI (or any other CI tool), you should customize the report
-* https://coveralls.io/docs/api
-* http://about.travis-ci.org/docs/user/ci-environment/#Environment-variables
-* https://wiki.jenkins-ci.org/display/JENKINS/Building+a+software+project#Buildingasoftwareproject-JenkinsSetEnvironmentVariables
-*/
-$defaultFinder = $coverallsReport->getBranchFinder();
-$coverallsReport
-    ->setBranchFinder(function() use ($defaultFinder) {
-        if (($branch = getenv('TRAVIS_BRANCH')) === false)
-        {
-            $branch = $defaultFinder();
-        }
-
-        return $branch;
-    })
-    ->setServiceName(getenv('TRAVIS') ? 'travis-ci' : null)
-    ->setServiceJobId(getenv('TRAVIS_JOB_ID') ?: null)
-    ->addDefaultWriter()
-;
-
-$runner->addReport($coverallsReport);
+	$runner->addReport($cloverReport);
+}
