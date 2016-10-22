@@ -18,7 +18,8 @@ class BfwController implements \SplObserver
     protected $config;
     
     /**
-     * @var \BFW\ControllerRouterLink Linker between controller and router instance
+     * @var \BFW\ControllerRouterLink $routerLinker Linker between
+     *  controller and router instance
      */
     protected $routerLinker;
     
