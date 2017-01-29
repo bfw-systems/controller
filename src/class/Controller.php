@@ -9,6 +9,11 @@ namespace BfwController;
 abstract class Controller
 {
     /**
+     * @var \BFW\Application $app BFW Application instance
+     */
+    protected $app;
+    
+    /**
      * @var \BFW\Request $request : Request instance to get informations
      *      on the http request
      */
@@ -20,6 +25,7 @@ abstract class Controller
      */
     public function __construct()
     {
+        $this->app     = \BFW\Application::getInstance();
         $this->request = \BFW\Request::getInstance();
     }
 }
