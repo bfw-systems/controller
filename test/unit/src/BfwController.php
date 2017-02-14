@@ -56,6 +56,17 @@ class BfwController extends atoum
                 ->isIdenticalTo(\BFW\ControllerRouterLink::getInstance());
     }
     
+    public function testRunWithoutTarget()
+    {
+        $this->assert('test BfwController::run without target')
+            ->if($subject = new \BFW\Subjects)
+            ->and($subject->setAction('bfw_run_finish'))
+            ->and($this->constant->PHP_SAPI = 'apache')
+            ->then
+            ->variable($this->class->update($subject))
+                ->isNull();
+    }
+    
     public function testNotifyAndRunProcedural()
     {
         $this->assert('test BfwController::notify without run')
@@ -95,7 +106,41 @@ class BfwController extends atoum
             ->variable($this->class->update($subject))
                 ->isNull();
         
+        $this->assert('test BfwController::notify with run in object mode with exception on target returned')
+            ->then
+            ->if($this->class->getRouterLinker()->setTarget([
+                'class'  => 'testClass'
+            ]))
+            ->given($class = $this->class)
+            ->and($subject->setAction('bfw_run_finish'))
+            ->exception(function() use ($class, $subject) {
+                $class->update($subject);
+            })
+                ->hasMessage(
+                    'You must define properties "class" and "method" for'
+                    .' the current route in the router configuration.'
+                );
+        
+        $this->assert('test BfwController::notify with run in object mode with exception on target returned')
+            ->then
+            ->if($this->class->getRouterLinker()->setTarget([
+                'method' => 'testMethod'
+            ]))
+            ->given($class = $this->class)
+            ->and($subject->setAction('bfw_run_finish'))
+            ->exception(function() use ($class, $subject) {
+                $class->update($subject);
+            })
+                ->hasMessage(
+                    'You must define properties "class" and "method" for'
+                    .' the current route in the router configuration.'
+                );
+        
         $this->assert('test BfwController::notify with run in object mode with exception on class')
+            ->if($this->class->getRouterLinker()->setTarget([
+                'class'  => 'testClass',
+                'method' => 'testMethod'
+            ]))
             ->then
             ->given($class = $this->class)
             ->and($subject->setAction('bfw_run_finish'))

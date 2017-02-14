@@ -63,6 +63,10 @@ class BfwController implements \SplObserver
             return;
         }
         
+        if ($this->routerLinker->getTarget() === null) {
+            return;
+        }
+        
         $useClass = $this->config->getConfig('useClass');
         
         if ($useClass === true) {
@@ -83,8 +87,19 @@ class BfwController implements \SplObserver
     protected function runObject()
     {
         $targetInfos = (object) $this->routerLinker->getTarget();
-        $class       = $targetInfos->class;
-        $method      = $targetInfos->method;
+        
+        if (
+            !property_exists($targetInfos, 'class') ||
+            !property_exists($targetInfos, 'method')
+        ) {
+            throw new \Exception(
+                'You must define properties "class" and "method" for'
+                .' the current route in the router configuration.'
+            );
+        }
+        
+        $class  = $targetInfos->class;
+        $method = $targetInfos->method;
         
         if (!class_exists($class)) {
             throw new \Exception('Class '.$class.' not found');
@@ -110,7 +125,7 @@ class BfwController implements \SplObserver
         $routerLinker = $this->routerLinker;
         
         $runFct = function() use ($routerLinker) {
-            $controllerFile = $routerLinker->getTarget();
+            $controllerFile = (string) $routerLinker->getTarget();
             
             if (!file_exists(CTRL_DIR.$controllerFile)) {
                 throw new \Exception(
