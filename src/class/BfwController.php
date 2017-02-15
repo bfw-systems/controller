@@ -49,6 +49,9 @@ class BfwController implements \SplObserver
     {
         if ($subject->getAction() === 'bfw_run_finish') {
             $this->run();
+            
+            $app = \BFW\Application::getInstance();
+            $app->notifyAction('BfwController_run_finish');
         }
     }
     
@@ -74,9 +77,6 @@ class BfwController implements \SplObserver
         } else {
             $this->runProcedural();
         }
-        
-        $app = \BFW\Application::getInstance();
-        $app->notifyAction('BfwController_run_finish');
     }
     
     /**
