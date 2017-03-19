@@ -3,8 +3,10 @@
 namespace BfwController\test\unit;
 
 use \atoum;
+use \BFW\test\helpers\ApplicationInit as AppInit;
 
 require_once(__DIR__.'/../../../vendor/autoload.php');
+require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/helpers/ApplicationInit.php');
 require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/ConfigForceDatas.php');
 require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/Module.php');
 
@@ -22,9 +24,9 @@ class BfwController extends atoum
      */
     public function beforeTestMethod($testMethod)
     {
-        define('CTRL_DIR', 'controllers/');
-        define('CONFIG_DIR', 'config/');
-        define('MODULES_DIR', 'modules/');
+        AppInit::init([
+            'vendorDir' => __DIR__.'/../../../vendor'
+        ]);
         
         $config = new \BFW\test\unit\mocks\ConfigForceDatas('unit_test');
         $config->forceConfig(

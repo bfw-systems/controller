@@ -1,21 +1,17 @@
 <?php
 
 namespace BfwController\test\unit;
+
 use \atoum;
+use \BFW\test\helpers\ApplicationInit as AppInit;
 
 require_once(__DIR__.'/../../../vendor/autoload.php');
 
 //Mock \BFW\Application
-require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/ApplicationForceConfig.php');
-require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/Application.php');
-require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/ConfigForceDatas.php');
-require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/mocks/src/class/Modules.php');
-require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/helpers/Application.php');
+require_once(__DIR__.'/../../../vendor/bulton-fr/bfw/test/unit/helpers/ApplicationInit.php');
 
 class Controller extends atoum
 {
-    use \BFW\test\helpers\Application;
-    
     /**
      * @var $class : Instance de la class
      */
@@ -23,7 +19,9 @@ class Controller extends atoum
     
     public function testConstruct()
     {
-        $this->initApp('');
+        AppInit::init([
+            'vendorDir' => __DIR__.'/../../../vendor'
+        ]);
         
         $this->assert('test Controller::constructor')
             ->if($this->class = new \BfwController\test\unit\mocks\MyController)
