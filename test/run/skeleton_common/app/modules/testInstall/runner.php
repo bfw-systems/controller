@@ -1,5 +1,5 @@
 <?php
 
-$config = $module->getConfig();
+$config = $this->getConfig();
 $linker = \BFW\ControllerRouterLink::getInstance();
-$linker->setTarget($config->getConfig('target'));
+$linker->setTarget($config->getValue('target'));
