@@ -70,7 +70,7 @@ class BfwController implements \SplObserver
             return;
         }
         
-        $useClass = $this->config->getConfig('useClass');
+        $useClass = $this->config->getValue('useClass');
         
         if ($useClass === true) {
             $this->runObject();

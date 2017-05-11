@@ -1,6 +1,6 @@
 <?php
 
-$bfwController = new \BfwController\BfwController($module);
+$bfwController = new \BfwController\BfwController($this);
 
 $app = \BFW\Application::getInstance();
 $app->attach($bfwController);
