@@ -62,7 +62,7 @@ class BfwController extends atoum
     {
         $this->assert('test BfwController::run without target')
             ->if($subject = new \BFW\Subjects)
-            ->and($subject->setAction('bfw_run_finish'))
+            ->and($subject->addNotification('bfw_run_finish'))
             ->and($this->constant->PHP_SAPI = 'apache')
             ->then
             ->variable($this->class->update($subject))
@@ -82,7 +82,7 @@ class BfwController extends atoum
         $this->assert('test BfwController::notify with run in procedural mode with file not found exception')
             ->then
             ->given($class = $this->class)
-            ->and($subject->setAction('bfw_run_finish'))
+            ->and($subject->addNotification('bfw_run_finish'))
             ->exception(function() use ($class, $subject) {
                 $class->update($subject);
             })
@@ -114,7 +114,7 @@ class BfwController extends atoum
                 'class'  => 'testClass'
             ]))
             ->given($class = $this->class)
-            ->and($subject->setAction('bfw_run_finish'))
+            ->and($subject->addNotification('bfw_run_finish'))
             ->exception(function() use ($class, $subject) {
                 $class->update($subject);
             })
@@ -129,7 +129,7 @@ class BfwController extends atoum
                 'method' => 'testMethod'
             ]))
             ->given($class = $this->class)
-            ->and($subject->setAction('bfw_run_finish'))
+            ->and($subject->addNotification('bfw_run_finish'))
             ->exception(function() use ($class, $subject) {
                 $class->update($subject);
             })
@@ -145,7 +145,7 @@ class BfwController extends atoum
             ]))
             ->then
             ->given($class = $this->class)
-            ->and($subject->setAction('bfw_run_finish'))
+            ->and($subject->addNotification('bfw_run_finish'))
             ->exception(function() use ($class, $subject) {
                 $class->update($subject);
             })
