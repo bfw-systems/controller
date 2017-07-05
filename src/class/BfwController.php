@@ -51,7 +51,7 @@ class BfwController implements \SplObserver
             $this->run();
             
             $app = \BFW\Application::getInstance();
-            $app->notifyAction('BfwController_run_finish');
+            $app->addNotification('BfwController_run_finish');
         }
     }
     
