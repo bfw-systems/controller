@@ -23,7 +23,8 @@
         "bulton-fr/bfw": "3.0.0-rc.6"
     },
     "require-dev": {
-        "atoum/atoum": "~2.5"
+        "atoum/atoum": "~3.1",
+        "atoum/visibility-extension": "~1.3"
     },
     "autoload": {
         "psr-4": {
@@ -32,7 +33,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "BfwController\\test\\unit\\mocks\\": "test/unit/mocks"
+            "BfwController\\Test\\Helpers\\": "test/unit/helpers"
         }
     }
 }

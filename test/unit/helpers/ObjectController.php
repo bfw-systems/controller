@@ -1,8 +1,8 @@
 <?php
 
-namespace BfwController\test\unit\mocks;
+namespace BfwController\Test\Helpers;
 
-class MyController extends \BfwController\Controller
+class ObjectController extends \BfwController\Controller
 {
     public function getApp()
     {
