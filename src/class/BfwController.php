@@ -50,6 +50,10 @@ class BfwController implements \SplObserver
     protected $ctrlRouterInfos;
     
     /**
+     * @var string $execRouteSystemName The name of the current system. Used on
+     * event "execRoute". Allow to extends this class in another module :)
+     */
+    protected $execRouteSystemName = 'bfw-controller';
     
     /**
      * Constructor
