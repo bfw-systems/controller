@@ -69,7 +69,6 @@ class BfwController implements \SplObserver
     
     /**
      * Observer update method
-     * Call run method on action "bfw_run_finish".
      * 
      * @param \SplSubject $subject
      * 
@@ -77,11 +76,21 @@ class BfwController implements \SplObserver
      */
     public function update(\SplSubject $subject)
     {
-        if ($subject->getAction() === 'bfw_run_finish') {
-            $this->run();
-            
+        if ($subject->getAction() === 'bfw_ctrlRouterLink_subject_added') {
             $app = \BFW\Application::getInstance();
-            $app->addNotification('BfwController_run_finish');
+            $app->getSubjectList()
+                ->getSubjectForName('ctrlRouterLink')
+                ->attach($this)
+            ;
+        } elseif ($subject->getAction() === 'execRoute') {
+            $this->obtainCtrlRouterInfos($subject);
+            
+            if (
+                $this->ctrlRouterInfos->isFound === true &&
+                $this->ctrlRouterInfos->forWho === $this->execRouteSystemName
+            ) {
+                $this->run();
+            }
         }
     }
     
