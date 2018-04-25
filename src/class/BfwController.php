@@ -2,11 +2,37 @@
 
 namespace BfwController;
 
+use Exception;
+
 /**
  * Controller system class
  */
 class BfwController implements \SplObserver
 {
+    /**
+     * @const ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED Error code if the class
+     * and the method is not declared for the current route, in object mode.
+     */
+    const ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED = 2001001;
+    
+    /**
+     * @const ERR_RUN_OBJECT_CLASS_NOT_FOUND Error code if the class declared
+     * for the route is not found. In object mode only.
+     */
+    const ERR_RUN_OBJECT_CLASS_NOT_FOUND = 2001002;
+    
+    /**
+     * @const ERR_RUN_OBJECT_METHOD_NOT_FOUND Error code if the method declared
+     * for the route is not found. In object mode only.
+     */
+    const ERR_RUN_OBJECT_METHOD_NOT_FOUND = 2001003;
+    
+    /**
+     * @const ERR_RUN_PROCEDURAL_FILE_NOT_FOUND Error code if the file to use
+     * for the route is not found. In procedural mode only.
+     */
+    const ERR_RUN_PROCEDURAL_FILE_NOT_FOUND = 2001004;
+    
     /**
      * @var \BFW\Module $module The bfw module instance for this module
      */
@@ -92,9 +118,10 @@ class BfwController implements \SplObserver
             !property_exists($targetInfos, 'class') ||
             !property_exists($targetInfos, 'method')
         ) {
-            throw new \Exception(
+            throw new Exception(
                 'You must define properties "class" and "method" for'
-                .' the current route in the router configuration.'
+                .' the current route in the router configuration.',
+                self::ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED
             );
         }
         
@@ -102,13 +129,17 @@ class BfwController implements \SplObserver
         $method = $targetInfos->method;
         
         if (!class_exists($class)) {
-            throw new \Exception('Class '.$class.' not found');
+            throw new Exception(
+                'Class '.$class.' not found',
+                self::ERR_RUN_OBJECT_CLASS_NOT_FOUND
+            );
         }
         
         $classInstance = new $class;
         if (!method_exists($classInstance, $method)) {
-            throw new \Exception(
-                'Method '.$method.' not found in class '.$class
+            throw new Exception(
+                'Method '.$method.' not found in class '.$class,
+                self::ERR_RUN_OBJECT_METHOD_NOT_FOUND
             );
         }
         
@@ -128,8 +159,9 @@ class BfwController implements \SplObserver
             $controllerFile = (string) $routerLinker->getTarget();
             
             if (!file_exists(CTRL_DIR.$controllerFile)) {
-                throw new \Exception(
-                    'Controller file '.$controllerFile.' not found.'
+                throw new Exception(
+                    'Controller file '.$controllerFile.' not found.',
+                    self::ERR_RUN_PROCEDURAL_FILE_NOT_FOUND
                 );
             }
             
