@@ -82,6 +82,20 @@ class BfwController implements \SplObserver
     }
     
     /**
+     * Set the property ctrlRouterInfos with the context object obtain linked
+     * to the subject.
+     * Allow override to get only some part. And used for unit test.
+     * 
+     * @param \BFW\Subject $subject
+     * 
+     * @return void
+     */
+    protected function obtainCtrlRouterInfos($subject)
+    {
+        $this->ctrlRouterInfos = $subject->getContext();
+    }
+    
+    /**
      * Run controller system if application is not run in cli mode
      * 
      * @return void
