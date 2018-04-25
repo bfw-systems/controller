@@ -44,10 +44,12 @@ class BfwController implements \SplObserver
     protected $config;
     
     /**
-     * @var \BFW\ControllerRouterLink $routerLinker Linker between
-     *  controller and router instance
+     * @var \stdClass|null $ctrlRouterInfos The context object passed to
+     * subject for the action "searchRoute".
      */
-    protected $routerLinker;
+    protected $ctrlRouterInfos;
+    
+    /**
     
     /**
      * Constructor
@@ -59,8 +61,6 @@ class BfwController implements \SplObserver
     {
         $this->module = $module;
         $this->config = $module->getConfig();
-        
-        $this->routerLinker = \BFW\ControllerRouterLink::getInstance();
     }
     
     /**
@@ -92,7 +92,7 @@ class BfwController implements \SplObserver
             return;
         }
         
-        if ($this->routerLinker->getTarget() === null) {
+        if ($this->ctrlRouterInfos->target === null) {
             return;
         }
         
@@ -112,7 +112,7 @@ class BfwController implements \SplObserver
      */
     protected function runObject()
     {
-        $targetInfos = (object) $this->routerLinker->getTarget();
+        $targetInfos = (object) $this->ctrlRouterInfos->target;
         
         if (
             !property_exists($targetInfos, 'class') ||
@@ -153,10 +153,10 @@ class BfwController implements \SplObserver
      */
     protected function runProcedural()
     {
-        $routerLinker = $this->routerLinker;
+        $routerLinker = $this->ctrlRouterInfos;
         
         $runFct = function() use ($routerLinker) {
-            $controllerFile = (string) $routerLinker->getTarget();
+            $controllerFile = (string) $routerLinker->target;
             
             if (!file_exists(CTRL_DIR.$controllerFile)) {
                 throw new Exception(
