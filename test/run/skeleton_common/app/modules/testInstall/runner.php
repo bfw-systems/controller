@@ -1,5 +1,7 @@
 <?php
 
-$config = $this->getConfig();
-$linker = \BFW\ControllerRouterLink::getInstance();
-$linker->setTarget($config->getValue('target'));
+$observer = new \Modules\testInstall\Observer($this);
+
+$app        = \BFW\Application::getInstance();
+$appSubject = $app->getSubjectList()->getSubjectForName('ApplicationTasks');
+$appSubject->attach($observer);
