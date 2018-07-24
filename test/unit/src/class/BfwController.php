@@ -98,7 +98,7 @@ class BfwController extends Atoum
             ->and($ctrlRouterInfos->forWho = $this->mock->getExecRouteSystemName())
             ->then
             ->given($subject = new \BFW\Test\Mock\Subject)
-            ->and($subject->setAction('execRoute'))
+            ->and($subject->setAction('ctrlRouterLink_exec_execRoute'))
             ->and($subject->setContext($ctrlRouterInfos))
             ->then
             ->if($this->calling($this->mock)->run = null)
