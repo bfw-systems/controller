@@ -117,6 +117,9 @@ class BfwController implements \SplObserver
     public function update(\SplSubject $subject)
     {
         if ($subject->getAction() === 'bfw_ctrlRouterLink_subject_added') {
+            $this->module->monolog->getLogger()
+                ->debug('Add observer to ctrlRouterLink subject');
+            
             $app = \BFW\Application::getInstance();
             $app->getSubjectList()
                 ->getSubjectForName('ctrlRouterLink')
@@ -162,6 +165,14 @@ class BfwController implements \SplObserver
         if ($this->ctrlRouterInfos->target === null) {
             return;
         }
+        
+        $this->module
+            ->monolog
+            ->getLogger()
+            ->debug(
+                'Execute current route.',
+                ['target' => $this->ctrlRouterInfos->target]
+            );
         
         $useClass = $this->config->getValue('useClass');
         

@@ -13,9 +13,9 @@ require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/class/Subject.php')
 class BfwController extends Atoum
 {
     use \BFW\Test\Helpers\Application;
+    use \BfwController\Test\Helpers\Module;
     
     protected $mock;
-    protected $module;
     
     public function beforeTestMethod($testMethod)
     {
@@ -30,8 +30,8 @@ class BfwController extends Atoum
             [$this->app, 'runCtrlRouterLink']
         ]);
         $this->initApp();
-        $this->createModule();
         $this->app->run();
+        $this->createModule();
         
         if ($testMethod === 'testConstructAndGetters') {
             return;
@@ -45,21 +45,6 @@ class BfwController extends Atoum
             ->generate('BfwController\BfwController')
         ;
         $this->mock = new \mock\BfwController\BfwController($this->module);
-    }
-    
-    protected function createModule()
-    {
-        $this->module = new \BFW\Test\Mock\Module('bfw-controller');
-        $config = new \BFW\Config('bfw-controller');
-        $this->module->setConfig($config);
-        $this->module->setStatus(true, true);
-        
-        $config->setConfigForFile(
-            'config.php',
-            (object) [
-                'useClass' => false
-            ]
-        );
     }
     
     public function testConstructAndGetters()
