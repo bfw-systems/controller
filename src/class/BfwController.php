@@ -122,7 +122,7 @@ class BfwController implements \SplObserver
                 ->getSubjectForName('ctrlRouterLink')
                 ->attach($this)
             ;
-        } elseif ($subject->getAction() === 'execRoute') {
+        } elseif ($subject->getAction() === 'ctrlRouterLink_exec_execRoute') {
             $this->obtainCtrlRouterInfos($subject);
             
             if (
