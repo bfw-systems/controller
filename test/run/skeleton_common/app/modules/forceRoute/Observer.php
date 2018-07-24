@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\testInstall;
+namespace Modules\forceRoute;
 
 class Observer implements \SplObserver
 {
