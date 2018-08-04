@@ -25,13 +25,11 @@ class BfwController extends Atoum
         
         $this->setRootDir(__DIR__.'/../../../..');
         $this->createApp();
-        $this->app->setRunSteps([
-            [$this->app, 'initCtrlRouterLink'],
-            [$this->app, 'runCtrlRouterLink']
-        ]);
+        $this->disableSomeCoreSystem();
         $this->initApp();
-        $this->app->run();
+        $this->removeLoadModules();
         $this->createModule();
+        $this->app->run();
         
         if ($testMethod === 'testConstructAndGetters') {
             return;
@@ -66,19 +64,12 @@ class BfwController extends Atoum
     
     public function testUpdate()
     {
-        $this->assert('test BfwController::update for adding to linker subject')
+        $this->assert('test BfwController::update - prepare')
             ->given($subject = new \BFW\Test\Mock\Subject)
-            ->and($subject->setAction('bfw_ctrlRouterLink_subject_added'))
-            ->then
-            ->variable($this->mock->update($subject))
-                ->isNull()
-            ->given($subjectList = \BFW\Application::getInstance()->getSubjectList())
-            ->array($observers = $subjectList->getSubjectForName('ctrlRouterLink')->getObservers())
-                ->contains($this->mock)
         ;
         
         $this->assert('test BfwController::update for run system')
-            ->given($ctrlRouterInfos = $this->app->getCtrlRouterInfos())
+            ->given($ctrlRouterInfos = $this->app->getCtrlRouterLink())
             ->if($ctrlRouterInfos->isFound = true)
             ->and($ctrlRouterInfos->forWho = $this->mock->getExecRouteSystemName())
             ->then
@@ -91,7 +82,7 @@ class BfwController extends Atoum
             ->variable($this->mock->update($subject))
                 ->isNull()
             ->object($this->mock->getCtrlRouterInfos())
-                ->isIdenticalTo($this->app->getCtrlRouterInfos())
+                ->isIdenticalTo($this->app->getCtrlRouterLink())
             ->mock($this->mock)
                 ->call('run')
                     ->once()
@@ -123,7 +114,7 @@ class BfwController extends Atoum
         $this->assert('test BfwController::run - prepare')
             ->if($this->constant->PHP_SAPI = 'www')
             ->then
-            ->given($ctrlRouterInfos = $this->app->getCtrlRouterInfos())
+            ->given($ctrlRouterInfos = $this->app->getCtrlRouterLink())
             ->if($ctrlRouterInfos->isFound = true)
             ->and($ctrlRouterInfos->forWho = $this->mock->getExecRouteSystemName())
             ->then
@@ -150,7 +141,7 @@ class BfwController extends Atoum
         
         $this->assert('test BfwController::run with object')
             ->if($ctrlRouterInfos->target = 'MyController')
-            ->and($this->module->getConfig()->setConfigKeyForFile('config.php', 'useClass', true))
+            ->and($this->module->getConfig()->setConfigKeyForFilename('config.php', 'useClass', true))
             ->then
             ->variable($this->mock->run())
                 ->isNull()
@@ -163,7 +154,7 @@ class BfwController extends Atoum
         
         $this->assert('test BfwController::run with procedural')
             ->if($ctrlRouterInfos->target = 'MyController')
-            ->and($this->module->getConfig()->setConfigKeyForFile('config.php', 'useClass', false))
+            ->and($this->module->getConfig()->setConfigKeyForFilename('config.php', 'useClass', false))
             ->then
             ->variable($this->mock->run())
                 ->isNull()
@@ -178,7 +169,7 @@ class BfwController extends Atoum
     public function testRunObject()
     {
         $this->assert('test BfwController::runObject - prepare')
-            ->given($ctrlRouterInfos = $this->app->getCtrlRouterInfos())
+            ->given($ctrlRouterInfos = $this->app->getCtrlRouterLink())
             ->if($ctrlRouterInfos->isFound = true)
             ->and($ctrlRouterInfos->forWho = $this->mock->getExecRouteSystemName())
             ->and($ctrlRouterInfos->target = null)
@@ -260,7 +251,7 @@ class BfwController extends Atoum
     public function testRunProcedural()
     {
         $this->assert('test BfwController::runProcedural - prepare')
-            ->given($ctrlRouterInfos = $this->app->getCtrlRouterInfos())
+            ->given($ctrlRouterInfos = $this->app->getCtrlRouterLink())
             ->if($ctrlRouterInfos->isFound = true)
             ->and($ctrlRouterInfos->forWho = $this->mock->getExecRouteSystemName())
             ->and($ctrlRouterInfos->target = null)

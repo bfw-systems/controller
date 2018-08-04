@@ -6,6 +6,21 @@ trait Module
 {
     protected $module;
     
+    protected function disableSomeCoreSystem()
+    {
+        $coreSystemList = $this->app->getCoreSystemList();
+        unset($coreSystemList['cli']);
+        $this->app->setCoreSystemList($coreSystemList);
+    }
+    
+    protected function removeLoadModules()
+    {
+        $runTasks = $this->app->getRunTasks();
+        $allSteps = $runTasks->getRunSteps();
+        unset($allSteps['moduleList']);
+        $runTasks->setRunSteps($allSteps);
+    }
+    
     protected function createModule()
     {
         $config     = new \BFW\Config('bfw-controller');
@@ -13,7 +28,7 @@ trait Module
         $moduleList->setModuleConfig('bfw-controller', $config);
         $moduleList->addModule('bfw-controller');
         
-        $this->module = $this->app->getModuleForName('bfw-controller');
+        $this->module = $moduleList->getModuleByName('bfw-controller');
         
         $this->module->monolog = new \BFW\Monolog(
             'bfw-controller',
@@ -21,7 +36,7 @@ trait Module
         );
         $this->module->monolog->addAllHandlers();
         
-        $config->setConfigForFile(
+        $config->setConfigForFilename(
             'config.php',
             (object) [
                 'useClass' => false

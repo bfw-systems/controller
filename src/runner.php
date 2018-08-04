@@ -9,5 +9,5 @@ $this->monolog->addAllHandlers();
 $bfwController = new \BfwController\BfwController($this);
 
 $app        = \BFW\Application::getInstance();
-$appSubject = $app->getSubjectList()->getSubjectForName('ApplicationTasks');
+$appSubject = $app->getSubjectList()->getSubjectByName('ctrlRouterLink');
 $appSubject->attach($bfwController);
