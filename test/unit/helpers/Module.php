@@ -38,7 +38,7 @@ trait Module
         
         $config->setConfigForFilename(
             'config.php',
-            (object) [
+            [
                 'useClass' => false
             ]
         );

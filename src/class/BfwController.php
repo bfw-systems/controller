@@ -181,11 +181,11 @@ class BfwController implements \SplObserver
      */
     protected function runObject()
     {
-        $targetInfos = (object) $this->ctrlRouterInfos->target;
+        $targetInfos = $this->ctrlRouterInfos->target;
         
         if (
-            !property_exists($targetInfos, 'class') ||
-            !property_exists($targetInfos, 'method')
+            !array_key_exists('class', $targetInfos) ||
+            !array_key_exists('method', $targetInfos)
         ) {
             throw new Exception(
                 'You must define properties "class" and "method" for'
@@ -194,8 +194,8 @@ class BfwController implements \SplObserver
             );
         }
         
-        $class  = $targetInfos->class;
-        $method = $targetInfos->method;
+        $class  = $targetInfos['class'];
+        $method = $targetInfos['method'];
         
         if (!class_exists($class)) {
             throw new Exception(

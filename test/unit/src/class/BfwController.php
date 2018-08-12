@@ -7,8 +7,8 @@ use \atoum;
 $vendorPath = realpath(__DIR__.'/../../../../vendor');
 require_once($vendorPath.'/autoload.php');
 require_once($vendorPath.'/bulton-fr/bfw/test/unit/helpers/Application.php');
-require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/class/Module.php');
-require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/class/Subject.php');
+require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/Module.php');
+require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/Subject.php');
 
 class BfwController extends Atoum
 {
@@ -181,7 +181,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject for missing all property exception')
-            ->if($ctrlRouterInfos->target = (object) [])
+            ->if($ctrlRouterInfos->target = [])
             ->then
             ->exception(function() {
                 $this->mock->runObject();
@@ -190,7 +190,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject for missing method property exception')
-            ->if($ctrlRouterInfos->target = (object) [
+            ->if($ctrlRouterInfos->target = [
                 'class' => '\BfwController\Test\Helpers\ObjectController'
             ])
             ->then
@@ -201,7 +201,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject for missing class property exception')
-            ->if($ctrlRouterInfos->target = (object) [
+            ->if($ctrlRouterInfos->target = [
                 'method' => 'index'
             ])
             ->then
@@ -212,7 +212,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject for class not exist exception')
-            ->if($ctrlRouterInfos->target = (object) [
+            ->if($ctrlRouterInfos->target = [
                 'class'  => '\BfwController\Test\Helpers\NotExistingClass',
                 'method' => 'index'
             ])
@@ -224,7 +224,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject for method not exist exception')
-            ->if($ctrlRouterInfos->target = (object) [
+            ->if($ctrlRouterInfos->target = [
                 'class'  => '\BfwController\Test\Helpers\ObjectController',
                 'method' => 'notExist'
             ])
@@ -236,7 +236,7 @@ class BfwController extends Atoum
         ;
         
         $this->assert('test BfwController::runObject call controller')
-            ->if($ctrlRouterInfos->target = (object) [
+            ->if($ctrlRouterInfos->target = [
                 'class'  => '\BfwController\Test\Helpers\ObjectController',
                 'method' => 'index'
             ])
