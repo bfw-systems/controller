@@ -2,6 +2,10 @@
 
 namespace BfwController\Test\Helpers;
 
+$vendorPath = realpath(__DIR__.'/../../../vendor');
+require_once($vendorPath.'/bulton-fr/bfw/test/unit/helpers/Application.php');
+require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/Module.php');
+
 trait Module
 {
     protected $module;
