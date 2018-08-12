@@ -44,7 +44,7 @@ class BfwController implements \SplObserver
     protected $config;
     
     /**
-     * @var \stdClass|null $ctrlRouterInfos The context object passed to
+     * @var object|null $ctrlRouterInfos The context object passed to
      * subject for the action "searchRoute".
      */
     protected $ctrlRouterInfos;
@@ -72,7 +72,7 @@ class BfwController implements \SplObserver
      * 
      * @return \BFW\Module
      */
-    public function getModule()
+    public function getModule(): \BFW\Module
     {
         return $this->module;
     }
@@ -82,7 +82,7 @@ class BfwController implements \SplObserver
      * 
      * @return \BFW\Config
      */
-    public function getConfig()
+    public function getConfig(): \BFW\Config
     {
         return $this->config;
     }
@@ -90,7 +90,7 @@ class BfwController implements \SplObserver
     /**
      * Getter accessor for ctrlRouterInfos property
      * 
-     * @return \stdClass
+     * @return object
      */
     public function getCtrlRouterInfos()
     {
@@ -102,7 +102,7 @@ class BfwController implements \SplObserver
      * 
      * @return string
      */
-    public function getExecRouteSystemName()
+    public function getExecRouteSystemName(): string
     {
         return $this->execRouteSystemName;
     }
@@ -137,7 +137,7 @@ class BfwController implements \SplObserver
      * 
      * @return void
      */
-    protected function obtainCtrlRouterInfos($subject)
+    protected function obtainCtrlRouterInfos(\BFW\Subject $subject)
     {
         $this->ctrlRouterInfos = $subject->getContext();
     }
