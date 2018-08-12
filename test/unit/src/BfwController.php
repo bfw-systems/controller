@@ -4,7 +4,7 @@ namespace BfwController\test\unit;
 
 use \atoum;
 
-$vendorPath = realpath(__DIR__.'/../../../../vendor');
+$vendorPath = realpath(__DIR__.'/../../../vendor');
 require_once($vendorPath.'/autoload.php');
 require_once($vendorPath.'/bulton-fr/bfw/test/unit/helpers/Application.php');
 require_once($vendorPath.'/bulton-fr/bfw/test/unit/mocks/src/Subject.php');
@@ -22,7 +22,7 @@ class BfwController extends atoum
         //BFW\Application::initCtrlRouterLink executed
         eval('namespace BFW {const PHP_SAPI = \'www\';}');
         
-        $this->setRootDir(__DIR__.'/../../../..');
+        $this->setRootDir(__DIR__.'/../../..');
         $this->createApp();
         $this->disableSomeCoreSystem();
         $this->initApp();
@@ -260,7 +260,7 @@ class BfwController extends atoum
             ->and($subject->setContext($ctrlRouterInfos))
             ->and($this->mock->obtainCtrlRouterInfos($subject))
             ->then
-            ->given($this->constant->CTRL_DIR = __DIR__.'/../../helpers/')
+            ->given($this->constant->CTRL_DIR = __DIR__.'/../helpers/')
         ;
         
         $this->assert('test BfwController::runProcedural with not existing file')

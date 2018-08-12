@@ -28,7 +28,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BfwController\\": "src/class/"
+            "BfwController\\": "src/"
         }
     },
     "autoload-dev": {
