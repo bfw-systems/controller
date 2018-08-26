@@ -25,7 +25,7 @@ Create your controller files into the directory `/src/controllers`.
 
 For an object controller, you can extends from the class `\BfwController\Controller`. This class adding properties `$app` and `$request` who are a direct access to the instance of the classes `\BFW\Application` and `\BFW\Request`. You can use the namespace `\Controller`, it's added by the framework and corresponding to the directory `/src/controllers`.
 
-For a procedural controller, the file will be included into a closure who is into the method `\BfwController\BfwController::runProcedural()`. So you will have a direct access to $this of the class, and you will have variables `$routerLinker` and `$controllerFile` into the scope.
+For a procedural controller, the file will be included into a closure who is into the method `\BfwController\BfwController::runProcedural()`. So you will have a direct access to `$this` of the class, and you will have variables `$routerLinker` and `$controllerFile` into the scope.
 
 __Example :__
 
@@ -44,3 +44,11 @@ class Test extends \BfwController\Controller
     }
 }
 ```
+
+__Router module :__
+
+This module not manage the application routing. You need to add a router module too.
+
+The route module have a config file to define each route. For each route, you should define a "target". With bfw-controller, the "target" value should have a specified format :
+* For an object controller : An array, the first value should be the class name (with namespace), the second value the method name. Like a callable array.
+* For a procedural controller : The filename with this extension. The path to the directory /src/controller should be omitted.
