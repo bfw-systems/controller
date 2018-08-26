@@ -1,8 +1,5 @@
 <?php
 
 return [
-    'target' => [
-        'class'  => '\Controller\Test',
-        'method' => 'unit'
-    ]
+    'target' => ['\Controller\Test', 'unit']
 ];

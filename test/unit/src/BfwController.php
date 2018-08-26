@@ -179,41 +179,28 @@ class BfwController extends atoum
             ->and($this->mock->obtainCtrlRouterInfos($subject))
         ;
         
-        $this->assert('test BfwController::runObject for missing all property exception')
+        $this->assert('test BfwController::runObject with missing target datas')
             ->if($ctrlRouterInfos->target = [])
             ->then
             ->exception(function() {
                 $this->mock->runObject();
             })
-                ->hasCode(\BfwController\BfwController::ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED)
+                ->hasCode(\BfwController\BfwController::ERR_RUN_OBJECT_MISSING_DATAS_INTO_TARGET)
         ;
         
-        $this->assert('test BfwController::runObject for missing method property exception')
-            ->if($ctrlRouterInfos->target = [
-                'class' => '\BfwController\Test\Helpers\ObjectController'
-            ])
+        $this->assert('test BfwController::runObject with bad target datas')
+            ->if($ctrlRouterInfos->target = 42)
             ->then
             ->exception(function() {
                 $this->mock->runObject();
             })
-                ->hasCode(\BfwController\BfwController::ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED)
-        ;
-        
-        $this->assert('test BfwController::runObject for missing class property exception')
-            ->if($ctrlRouterInfos->target = [
-                'method' => 'index'
-            ])
-            ->then
-            ->exception(function() {
-                $this->mock->runObject();
-            })
-                ->hasCode(\BfwController\BfwController::ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED)
+                ->hasCode(\BfwController\BfwController::ERR_RUN_OBJECT_MISSING_DATAS_INTO_TARGET)
         ;
         
         $this->assert('test BfwController::runObject for class not exist exception')
             ->if($ctrlRouterInfos->target = [
-                'class'  => '\BfwController\Test\Helpers\NotExistingClass',
-                'method' => 'index'
+                '\BfwController\Test\Helpers\NotExistingClass',
+                'index'
             ])
             ->then
             ->exception(function() {
@@ -224,8 +211,8 @@ class BfwController extends atoum
         
         $this->assert('test BfwController::runObject for method not exist exception')
             ->if($ctrlRouterInfos->target = [
-                'class'  => '\BfwController\Test\Helpers\ObjectController',
-                'method' => 'notExist'
+                '\BfwController\Test\Helpers\ObjectController',
+                'notExist'
             ])
             ->then
             ->exception(function() {
@@ -236,8 +223,8 @@ class BfwController extends atoum
         
         $this->assert('test BfwController::runObject call controller')
             ->if($ctrlRouterInfos->target = [
-                'class'  => '\BfwController\Test\Helpers\ObjectController',
-                'method' => 'index'
+                '\BfwController\Test\Helpers\ObjectController',
+                'index'
             ])
             ->then
             ->output(function() {

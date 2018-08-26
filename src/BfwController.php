@@ -10,10 +10,10 @@ use Exception;
 class BfwController implements \SplObserver
 {
     /**
-     * @const ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED Error code if the class
-     * and the method is not declared for the current route, in object mode.
+     * @const ERR_RUN_OBJECT_MISSING_DATAS_INTO_TARGET Error code if the class
+     * and the method is not declared for the current route. In object mode only
      */
-    const ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED = 2001001;
+    const ERR_RUN_OBJECT_MISSING_DATAS_INTO_TARGET = 2001001;
     
     /**
      * @const ERR_RUN_OBJECT_CLASS_NOT_FOUND Error code if the class declared
@@ -184,18 +184,18 @@ class BfwController implements \SplObserver
         $targetInfos = $this->ctrlRouterInfos->target;
         
         if (
-            !array_key_exists('class', $targetInfos) ||
-            !array_key_exists('method', $targetInfos)
+            !is_array($targetInfos) ||
+            (is_array($targetInfos) && count($targetInfos) !== 2)
         ) {
             throw new Exception(
-                'You must define properties "class" and "method" for'
-                .' the current route in the router configuration.',
-                self::ERR_RUN_OBJECT_CLASS_AND_METHOD_UNDEFINED
+                'The route target should be an array with the class name '
+                .'(first value) and the method name (second value).',
+                self::ERR_RUN_OBJECT_MISSING_DATAS_INTO_TARGET
             );
         }
         
-        $class  = $targetInfos['class'];
-        $method = $targetInfos['method'];
+        $class  = $targetInfos[0];
+        $method = $targetInfos[1];
         
         if (!class_exists($class)) {
             throw new Exception(
