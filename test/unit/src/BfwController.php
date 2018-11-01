@@ -24,7 +24,7 @@ class BfwController extends atoum
         
         $this->setRootDir(__DIR__.'/../../..');
         $this->createApp();
-        $this->disableSomeCoreSystem();
+        $this->disableSomeAppSystem();
         $this->initApp();
         $this->removeLoadModules();
         $this->createModule();
