@@ -1,0 +1,4 @@
+test/run/install_object/
+test/run/install_procedural/
+vendor/
+composer.lock

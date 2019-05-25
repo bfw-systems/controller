@@ -4,5 +4,5 @@
     "configFiles": [
         "config.php"
     ],
-    "installScript": ""
+    "installScript": "install.php"
 }
